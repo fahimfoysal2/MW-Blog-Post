@@ -2,6 +2,7 @@ import Vue       from 'vue'
 import VueRouter from 'vue-router'
 import Home      from '../views/Home.vue'
 import Post      from "@/views/Post";
+import Login     from "@/views/Login";
 
 Vue.use(VueRouter)
 
@@ -25,6 +26,11 @@ const routes = [
         path     : '/post/:id',
         name     : 'Post',
         component: Post
+    },
+    {
+        path: "/login",
+        name: 'Login',
+        component: Login,
     }
 ]
 
