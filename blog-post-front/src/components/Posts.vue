@@ -10,9 +10,11 @@
             <div class="post-text">
                 <p>
                     {{ post.content }}
+                    <br>
+                    <br>
                     <span class="read-more">
-                    <a href="#">Read More</a>
-                </span>
+                        <router-link :to="`/post/${post.id}`">Read More</router-link>
+                    </span>
                 </p>
             </div>
         </div>
