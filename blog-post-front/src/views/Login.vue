@@ -29,9 +29,21 @@ export default {
             password: '',
         }
     },
-    methods: {
+    methods : {
         authenticate() {
             console.log('Authentication Process');
+            axios.post('http://127.0.0.1:8000/' + this.authRoute, [this.email, this.password])
+                .then(response => {
+                    console.log(response.data);
+                })
+                .catch(reason => {
+                    console.log(reason.data);
+                })
+        }
+    },
+    computed: {
+        authRoute() {
+            return this.newUser ? 'login' : 'register';
         }
     },
 }
