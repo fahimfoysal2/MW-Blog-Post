@@ -1,5 +1,6 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+    <div class="about">
+        <h1>About Blog Post</h1>
+        <p>This Page will hold description/details about my blog post application..</p>
+    </div>
 </template>
