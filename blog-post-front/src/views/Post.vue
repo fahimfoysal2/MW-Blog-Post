@@ -1,18 +1,22 @@
 <template>
     <div class="post">
-        <h3>Show One Post Data</h3>
+        <h3>{{ post.title }}</h3>
+        <small>
+            <a href="#">
+                {{ post.user.name }}
+            </a>
+        </small>
         <div class="postData">
-            Post with ID:{{ $route.params.id }} to show here
             <div class="post-content">
-                <p>{{ post.content }}</p>
+                <p>{{ post.details }}</p>
             </div>
         </div>
         <hr>
         <div class="comments">
             <h5>Comments</h5>
-            <div v-for="comment in post.comments" class="comment">
-                <a href="#">{{ comment.user.name }}</a>
-                <p class="comment-text">{{ comment.text }}</p>
+            <div v-for="commentData in comments" class="comment">
+                <a href="#">{{ commentData.user.name }}</a>
+                <p class="comment-text">{{ commentData.comment }}</p>
             </div>
         </div>
     </div>
@@ -23,44 +27,67 @@ export default {
     name: "Post",
     data() {
         return {
-            post: {
-                id      : 1,
-                title   : "Post Title",
-                content : "Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusamus aut, corporis delectus deleniti earum eius est laboriosam laudantium modi molestias nisi obcaecati provident quae, quam quidem totam vitae voluptatibus!",
-                author  : {
+            post    : {
+                id     : 1,
+                title  : "Post Title",
+                details: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusamus aut, corporis delectus deleniti earum eius est laboriosam laudantium modi molestias nisi obcaecati provident quae, quam quidem totam vitae voluptatibus!",
+                user   : {
                     name: "Fahim Foysal",
                     id  : 1,
-                },
-                comments: [
-                    {
-                        id  : 1,
-                        text: "Nice Post",
-                        user: {
-                            id  : 1,
-                            name: "Fahim"
-                        }
-                    },
-                    {
+                }
+            },
+            comments: [
+                {
+                    id     : 1,
+                    comment: "Nice Post",
+                    user   : {
                         id  : 2,
-                        text: "Nice Post Again",
-                        user: {
-                            id  : 2,
-                            name: "Foysal"
-                        }
+                        name: 'Fahim--'
                     }
-                ]
-            }
+                }
+            ],
+
         }
+
+    }
+    ,
+    mounted() {
+        axios.get('http://127.0.0.1:8000/api/posts/' + this.$route.params.id,
+            {
+                headers: {'Authorization': 'Bearer ' + this.$store.state.token}
+            })
+            .then(response => {
+                this.post = response.data[0];
+            })
+            .catch(reason => {
+                console.log(reason.data);
+            });
+
+        axios.get('http://127.0.0.1:8000/api/comments/' + this.$route.params.id,
+            {
+                headers: {'Authorization': 'Bearer ' + this.$store.state.token}
+            })
+            .then(response => {
+                this.comments = response.data;
+            })
+            .catch(reason => {
+                console.log(reason.data);
+            });
     }
 }
 </script>
 
 <style scoped>
-    .comments{
-        text-align: left;
-    }
-    .comment-text{
-        display: inline-block;
-        padding-left: 10px;
-    }
+.comments {
+    text-align: left;
+}
+
+.comment-text {
+    display: inline-block;
+    padding-left: 10px;
+}
+
+h1, h3 {
+    margin: 5px 0 0;
+}
 </style>

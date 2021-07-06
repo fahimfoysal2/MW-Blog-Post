@@ -4,12 +4,12 @@
             <h1>{{ post.title }}</h1>
             <small>
                 <a href="#">
-                    {{ post.author.name }}
+                    {{ post.user.name }}
                 </a>
             </small>
             <div class="post-text">
                 <p>
-                    {{ post.content }}
+                    {{ post.details }}
                     <br>
                     <br>
                     <span class="read-more">

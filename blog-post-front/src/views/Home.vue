@@ -22,26 +22,8 @@ export default {
                 {
                     id     : 1,
                     title  : "Post Title",
-                    content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusamus aut, corporis delectus deleniti earum eius est laboriosam laudantium modi molestias nisi obcaecati provident quae, quam quidem totam vitae voluptatibus!",
-                    author : {
-                        name: "Fahim Foysal",
-                        id  : 1,
-                    },
-                },
-                {
-                    id     : 2,
-                    title  : "Post Title",
-                    content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusamus aut, corporis delectus deleniti earum eius est laboriosam laudantium modi molestias nisi obcaecati provident quae, quam quidem totam vitae voluptatibus!",
-                    author : {
-                        name: "Fahim Foysal",
-                        id  : 1,
-                    },
-                },
-                {
-                    id     : 3,
-                    title  : "Post Title",
-                    content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusamus aut, corporis delectus deleniti earum eius est laboriosam laudantium modi molestias nisi obcaecati provident quae, quam quidem totam vitae voluptatibus!",
-                    author : {
+                    details: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusamus aut, corporis delectus deleniti earum eius est laboriosam laudantium modi molestias nisi obcaecati provident quae, quam quidem totam vitae voluptatibus!",
+                    user   : {
                         name: "Fahim Foysal",
                         id  : 1,
                     },
@@ -53,6 +35,19 @@ export default {
         loggedIn() {
             return this.$store.state.token;
         }
+    },
+    mounted() {
+        axios.get('http://127.0.0.1:8000/api/posts',
+            {
+                headers: {'Authorization': 'Bearer ' + this.$store.state.token}
+            })
+            .then(response => {
+                console.log("received");
+                this.posts = response.data;
+            })
+            .catch(reason => {
+                console.log(reason.data);
+            });
     }
 }
 </script>
