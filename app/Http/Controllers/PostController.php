@@ -91,7 +91,7 @@ class PostController extends Controller
         if (!$post) return response()->json(["error" => "Post Not Found"]);
 
         if ($request->user()->id != $post->user->id) {
-            return response()->json(["error" => "Not Authorized to Update this post"]);
+            return response()->json(["error" => "Not Authorized to Delete this post"]);
         }
 
         $post->delete();
