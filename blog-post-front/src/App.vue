@@ -10,11 +10,22 @@
             </div>
             <div v-else>
                 {{ this.$store.state.user.name }}
+                (<a href="#" v-on:click="logout">logout</a> )
             </div>
         </div>
         <router-view/>
     </div>
 </template>
+
+<script>
+export default {
+    methods: {
+        logout() {
+            this.$store.dispatch('logout');
+        }
+    }
+}
+</script>
 
 <style>
 #app {

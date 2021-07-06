@@ -6,14 +6,14 @@
             <input v-model="password" type="password" name="password" id="pass" placeholder="Password"> <br> <br>
 
             <div v-if="newUser">
-                <input v-model="name" type="text" name="name" id="name" placeholder="User Name" value="makeid"> <br>
+                <input v-model="name" type="text" name="name" id="name" placeholder="User Name"> <br>
                 <br>
                 <button @click="authenticate" :disabled="emptyForm">Register</button>
                 or, <a href="#" @click="newUser = false">Login</a>
             </div>
 
             <div v-else>
-                <button type="submit" :disabled="emptyForm">Login</button>
+                <button @click="authenticate" :disabled="emptyForm">Login</button>
                 or, <a href="#" @click="newUser = true">Create Account</a>
             </div>
         </form>
@@ -33,7 +33,7 @@ export default {
     },
     methods : {
         authenticate() {
-            this.$store.dispatch(this.authRoute, {email: this.email, password: this.password});
+            this.$store.dispatch(this.authRoute, {email: this.email, password: this.password, name: this.name});
         }
     },
     computed: {

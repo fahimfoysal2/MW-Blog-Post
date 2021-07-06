@@ -36,6 +36,8 @@ class ApiAuthController extends Controller
      */
     public function register(Request $request)
     {
+        dd($request->all());
+
         $userData             = $request->validate([
             'name'     => 'required',
             'email'    => 'required|unique:users',
