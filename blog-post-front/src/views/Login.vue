@@ -1,19 +1,19 @@
 <template>
     <div class="login">
-
         <h3>Login Page</h3>
-        <form v-on:submit.prevent>
+        <form v-on:submit.prevent="authenticate">
             <input v-model.trim="email" type="email" name="email" id="email" placeholder="Email"> <br> <br>
             <input v-model="password" type="password" name="password" id="pass" placeholder="Password"> <br> <br>
 
             <div v-if="newUser">
-                <input v-model="name" type="text" name="name" id="name" placeholder="User Name"> <br> <br>
-                <button @click="authenticate">Register</button>
+                <input v-model="name" type="text" name="name" id="name" placeholder="User Name" value="makeid"> <br>
+                <br>
+                <button @click="authenticate" :disabled="emptyForm">Register</button>
                 or, <a href="#" @click="newUser = false">Login</a>
             </div>
 
             <div v-else>
-                <button @click="authenticate">Login</button>
+                <button type="submit" :disabled="emptyForm">Login</button>
                 or, <a href="#" @click="newUser = true">Create Account</a>
             </div>
         </form>
@@ -33,20 +33,16 @@ export default {
     },
     methods : {
         authenticate() {
-            console.log('Authentication Process');
-            axios.post('http://127.0.0.1:8000/' + this.authRoute, [this.email, this.password])
-                .then(response => {
-                    console.log(response.data);
-                })
-                .catch(reason => {
-                    console.log(reason.data);
-                })
+            this.$store.dispatch(this.authRoute, {email: this.email, password: this.password});
         }
     },
     computed: {
         authRoute() {
-            return this.newUser ? 'login' : 'register';
-        }
+            return this.newUser ? 'register' : 'login';
+        },
+        emptyForm() {
+            return (this.email === '' || this.password === '')
+        },
     },
 }
 </script>
