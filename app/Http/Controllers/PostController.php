@@ -47,8 +47,8 @@ class PostController extends Controller
      */
     public function show($postId)
     {
-        // TODO: get comments with posts too
-        $post = Post::with('user')->where('id', '=', $postId)->get();
+        // TODO: get comments Separately with another api call
+        $post = Post::with('user', 'comments')->where('id', '=', $postId)->get();
         return (count($post))
             ? response()->json(["post" => $post])
             : response()->json(["error" => "Post Not Found"]);
