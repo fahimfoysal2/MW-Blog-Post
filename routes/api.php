@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\ApiAuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,3 +26,4 @@ Route::post('/register', [ApiAuthController::class, 'register']);
 Route::post('/logout', [ApiAuthController::class, 'logOut'])->middleware('auth:api');
 
 Route::resource('/posts', PostController::class)->middleware('auth:api');
+Route::resource('/comments', CommentController::class)->middleware('auth:api');
