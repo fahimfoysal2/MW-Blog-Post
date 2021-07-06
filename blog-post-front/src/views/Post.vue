@@ -14,7 +14,13 @@
         <hr>
         <div class="comments">
             <h5>Comments</h5>
-            <div v-for="commentData in comments" class="comment">
+
+            <div class="create-comment">
+                <input type="text" name="new_comment" id="new_comment" v-model="newComment.comment">
+                <button @click="createComment" :disabled="emptyCommentBox">Comment</button>
+            </div>
+
+            <div v-for="commentData in allComments" class="comment">
                 <a href="#">{{ commentData.user.name }}</a>
                 <p class="comment-text">{{ commentData.comment }}</p>
             </div>
@@ -27,7 +33,7 @@ export default {
     name: "Post",
     data() {
         return {
-            post    : {
+            post       : {
                 id     : 1,
                 title  : "Post Title",
                 details: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusamus aut, corporis delectus deleniti earum eius est laboriosam laudantium modi molestias nisi obcaecati provident quae, quam quidem totam vitae voluptatibus!",
@@ -36,16 +42,21 @@ export default {
                     id  : 1,
                 }
             },
-            comments: [
+            allComments: [
                 {
                     id     : 1,
                     comment: "Nice Post",
                     user   : {
                         id  : 2,
-                        name: 'Fahim--'
+                        name: 'Fahim'
                     }
                 }
             ],
+
+            newComment: {
+                post_id: this.$route.params.id,
+                comment: '',
+            }
 
         }
 
@@ -68,11 +79,40 @@ export default {
                 headers: {'Authorization': 'Bearer ' + this.$store.state.token}
             })
             .then(response => {
-                this.comments = response.data;
+                this.allComments = response.data;
             })
             .catch(reason => {
                 console.log(reason.data);
             });
+    },
+    methods : {
+        createComment() {
+            axios.post('http://127.0.0.1:8000/api/comments',
+                this.newComment,
+                {
+                    headers: {'Authorization': 'Bearer ' + this.$store.state.token}
+                })
+                .then(response => {
+
+                    let newCreatedComment = {
+                        id     : response.data.id,
+                        comment: response.data.comment.comment,
+                        user   : {
+                            id  : this.$store.state.user.id,
+                            name: this.$store.state.user.name
+                        }
+                    };
+                    this.allComments.push(newCreatedComment);
+                })
+                .catch(reason => {
+                    console.log(reason.data);
+                });
+        }
+    },
+    computed: {
+        emptyCommentBox() {
+            return this.newComment.comment === '';
+        }
     }
 }
 </script>
