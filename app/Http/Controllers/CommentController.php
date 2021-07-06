@@ -11,51 +11,80 @@ class CommentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function index()
     {
-        //
+        return response()->json("NO Operation");
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function store(Request $request)
     {
-        //
+        $commentData = $request->validate([
+            'post_id' => 'required',
+            'comment' => 'required',
+        ]);
+
+        $commentData['user_id'] = $request->user()->id;
+
+        $comment = Comment::create($commentData);
+
+        return response()->json(["message" => "Comment Created", "comment" => $comment]);
     }
 
     /**
-     * Display the specified resource.
+     * Display Comments for Specific Post.
      *
-     * @param Comment $comment
-     * @return \Illuminate\Http\Response
+     * @param $postId
+     * @return JsonResponse
      */
-    public function show(Comment $comment)
+    public function show($postId)
     {
-        //
+        // get all comment for a post ,
+        // TODO: may be add a pagination
+
+        $comments = Comment::with('user')->where('post_id', $postId)->get();
+        return response()->json($comments);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param Comment $comment
-     * @return \Illuminate\Http\Response
+     * @param $commentId
+     * @return JsonResponse
      */
-    public function update(Request $request, Comment $comment)
+    public function update(Request $request, $commentId)
     {
-        //
+        $request->validate([
+            'comment' => 'required'
+        ]);
+
+        $comment = Comment::find($commentId);
+
+        if (!$comment) return response()->json(["error" => "Comment Not Found"]);
+
+        if ($request->user()->id != $comment->user->id) {
+            return response()->json(["error" => "Not Authorized to Update this Comment"]);
+        }
+
+        $comment->comment = $request->comment;
+        $comment->save();
+
+        return response()->json(["Comment Updated"]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param Comment $comment
+     * @param Request $request
+     * @param $commentId
      * @return JsonResponse
      */
     public function destroy(Request $request, $commentId)
