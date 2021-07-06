@@ -7,6 +7,7 @@
             <input v-model="password" type="password" name="password" id="pass" placeholder="Password"> <br> <br>
 
             <div v-if="newUser">
+                <input v-model="name" type="text" name="name" id="name" placeholder="User Name"> <br> <br>
                 <button @click="authenticate">Register</button>
                 or, <a href="#" @click="newUser = false">Login</a>
             </div>
@@ -25,6 +26,7 @@ export default {
     data() {
         return {
             newUser : false,
+            name    : '',
             email   : '',
             password: '',
         }
