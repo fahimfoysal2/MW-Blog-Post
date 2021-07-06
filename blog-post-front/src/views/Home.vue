@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-        <create-post/>
+        <create-post v-if="loggedIn"/>
         <Posts :posts="posts"/>
     </div>
 </template>
@@ -47,6 +47,11 @@ export default {
                     },
                 },
             ]
+        }
+    },
+    computed: {
+        loggedIn() {
+            return this.$store.state.token;
         }
     }
 }
