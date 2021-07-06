@@ -22,7 +22,7 @@ class ApiAuthController extends Controller
         // TODO: login validation in json
 
         if (!auth()->attempt($loginData)) {
-            return response()->json(['error' => "Invalid Credentials"], 401);
+            return response()->json(['error' => "Invalid Credentials"]);
         } else {
             $user  = auth()->user();
             $token = $user->createToken('apiToken')->accessToken;

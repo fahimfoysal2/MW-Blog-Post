@@ -4,8 +4,13 @@
             <router-link to="/">Home</router-link>
             |
             <router-link to="/about">About</router-link>
-            |
-            <router-link to="/login">Login</router-link>
+            <div v-if="! this.$store.state.token">
+                |
+                <router-link to="/login">Login</router-link>
+            </div>
+            <div v-else>
+                {{ this.$store.state.user.name }}
+            </div>
         </div>
         <router-view/>
     </div>
